@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         ShieraFormazioneTool – Copia/Incolla Formazione Fantacalcio
+// @name         SchieraFormazioneTool – Copia/Incolla Formazione Fantacalcio
 // @namespace    https://fantacalcio.it/
-// @version      1.1
+// @version      1.2
 // @description  Copia la formazione da una competizione e incollala in un’altra. Funziona campionato ↔ champions ↔ europa. Svuota automaticamente il campo prima di ricreare la formazione.
 // @author       AC
 // @match        https://leghe.fantacalcio.it/*/area-gioco/inserisci-formazione*
@@ -51,7 +51,8 @@
             alert("Nessun giocatore trovato in formazione. Controlla di avere titolari e/o panchina.");
             return;
         }
-        localStorage.setItem("shieraformazione_data", JSON.stringify(players));
+        // chiave con nome corretto
+        localStorage.setItem("schieraformazione_data", JSON.stringify(players));
         alert("Formazione COPIATA correttamente!");
     }
 
@@ -71,7 +72,6 @@
             let slotBtn = null;
 
             if (player.lineup === "starter") {
-                // Cerca uno slot titolare vuoto della stessa zona (P/D/C/A)
                 const starterSlots = Array.from(
                     document.querySelectorAll(".formation-item[data-lineup-status='starter']")
                 );
@@ -82,7 +82,6 @@
                     slotBtn = freeSlot.querySelector("[data-lineup-select]");
                 }
             } else {
-                // Cerca uno slot panchina libero
                 const benchSlots = Array.from(
                     document.querySelectorAll(".formation-item[data-lineup-status='reserve']")
                 );
@@ -116,7 +115,7 @@
      * INCOLLA LA FORMAZIONE
      ********************************/
     async function loadFormation() {
-        const data = localStorage.getItem("shieraformazione_data");
+        const data = localStorage.getItem("schieraformazione_data");
         if (!data) {
             alert("Nessuna formazione copiata. Usa prima COPIA FORMAZIONE.");
             return;
@@ -164,7 +163,6 @@
     }
 
     window.addEventListener("load", () => {
-        // diamo un attimo di tempo alla pagina per caricarsi
         setTimeout(addButtons, 800);
     });
 })();
